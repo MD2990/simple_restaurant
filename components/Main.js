@@ -1,7 +1,10 @@
 import {
 	Box,
+	Button,
 	Center,
+	Divider,
 	HStack,
+	IconButton,
 	Table,
 	TableCaption,
 	Tbody,
@@ -15,18 +18,20 @@ import {
 	Wrap,
 	WrapItem,
 } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { findIndex, sumBy } from 'lodash';
 import { useSnapshot } from 'valtio';
+import NavBar from '../components/NavBar';
 import state from '../store/stats';
-import * as currency from 'currency.js';
 const Data = () => {
 	const snap = useSnapshot(state);
 
 	return (
-		<Wrap justify='flex-end' spacing='4'>
-			{snap.data.map((pizza) => (
+		<Wrap justify='flex-start' spacing='4'>
+			{snap.data.map((pizza, index) => (
 				<WrapItem key={pizza.key}>
 					<Box
 						onClick={() => {
@@ -41,13 +46,56 @@ const Data = () => {
 							}
 						}}
 						cursor='pointer'
-						borderLeft='8px'
-						borderBottom='8px'
-						borderColor='whiteAlpha.100'
-						borderRadius='3xl'
+						borderLeft='4px'
+						borderBottom='4px'
+						borderColor='gray.100'
+						borderRadius='xl'
 						shadow='dark-lg'>
 						<Image src={pizza.img} height={500} width={500} alt={pizza.name} />
+						<HStack spacing='4' justify='center'>
+							<Text
+								fontWeight='extrabold'
+								fontSize='2xl'
+								textColor='teal.400'
+								mr='-3'>
+								{pizza.name} {pizza.price.toFixed(2)}
+							</Text>
+							<Text fontWeight='hairline' fontSize='sm' textColor='teal.200'>
+								{pizza.currency}
+							</Text>
+						</HStack>
 					</Box>
+					<Button
+						isDisabled={snap.bill ? false : true}
+						onClick={() => {
+							const check_index = snap.bill.findIndex(
+								(item) => item.key === pizza.key,
+							);
+
+							if (check_index === -1) {
+								state.bill.push(pizza);
+							} else {
+								state.bill[check_index].quantity += 1;
+							}
+						}}>
+						Add{' '}
+					</Button>
+					{'   '}
+					<Button
+						isDisabled={
+							state.bill.quantity && state.bill[index].quantity < 1
+								? true
+								: false
+						}
+						onClick={() => {
+							if (state.bill.length > 0 && state.bill[index].quantity > 0) {
+								if (state.bill[index].quantity >= 1)
+									state.bill[index].quantity -= 1;
+								if (state.bill[index].quantity == 0) state.bill.pop(pizza);
+							}
+						}}>
+						Min{' '}
+					</Button>
 				</WrapItem>
 			))}
 		</Wrap>
@@ -76,7 +124,6 @@ const InvoiceTable = () => {
 			</Thead>
 			<Tbody>
 				{snap.bill.map((pizza, index) => {
-					//	state.totalAmount = pizza.price * pizza.quantity;
 					return (
 						<Tr key={index}>
 							<Td>{index + 1}</Td>
@@ -90,11 +137,11 @@ const InvoiceTable = () => {
 			</Tbody>
 			<Tfoot>
 				<Tr>
-					<Th>Total Items: {snap.bill.length}</Th>
-					<Th></Th>
-					<Th></Th>
-					<Th></Th>
-					<Th ml={10}>
+					<Th colSpan='2' textAlign='left' nowrap='nowrap'>
+						Total Items: {snap.bill.length}
+					</Th>
+
+					<Th colSpan='3' textAlign='right' nowrap='nowrap'>
 						Total Amount:{' '}
 						{snap.bill.reduce(function (acc, curr) {
 							const results = acc + curr.quantity * curr.price;
@@ -112,9 +159,9 @@ export default function Main() {
 	const snap = useSnapshot(state);
 
 	return (
-		<Center m='2%'>
-			<VStack>
-				{/* 	<pre>{JSON.stringify(snap.bill, null, 2)}</pre> */}
+		<>
+			{/* 	<Center>
+			
 				<Text
 					alignSelf='stretch'
 					textAlign='center'
@@ -128,17 +175,37 @@ export default function Main() {
 					borderRadius='3xl'>
 					World Restaurant{' '}
 				</Text>
-				<Box
-					alignSelf='flex-start'
-					textAlign='left'
-					border='solid 2px'
-					borderColor='green.100'
-					p='1'
-					borderRadius='2xl'>
-					<InvoiceTable />
-				</Box>
-				<Data />
-			</VStack>
-		</Center>
+			</Center> */}
+			<Center m='2%'>
+				<HStack spacing='12'>
+					<Box
+						alignSelf='flex-start'
+						textAlign='left'
+						border='solid 2px'
+						borderColor='green.100'
+						p='1'
+						borderRadius='2xl'>
+						<IconButton
+							size='lg'
+							p='2'
+							m='2'
+							colorScheme='red'
+							aria-label='Clear'
+							icon={<DeleteIcon />}
+							onClick={() => (state.bill = [])}>
+							Clear
+						</IconButton>
+						<InvoiceTable />
+					</Box>
+					<Box
+						borderRadius='2xl'
+						w='5'
+						height='95rem'
+						bgGradient='linear(to-l, white, green.200)'></Box>
+
+					<Data />
+				</HStack>
+			</Center>
+		</>
 	);
 }
