@@ -17,39 +17,28 @@ import {
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import dataArray from '../data';
-import { findIndex, findKey } from 'lodash';
-
-const Data = ({ data, setState, arr }) => {
-	let ss = false;
-	const addToCart = (id) => {
-		const check_index = arr.findIndex((item) => item.key === id);
-		if (check_index !== -1) {
-			ss = true;
-			console.log('Quantity updated:', arr);
-		} else {
-			ss = false;
-			//art.push({ ...products.find((p) => p.id === id), quantity: 1 });
-
-			//setState((prevState) => [...prevState.find((p) => p.key === key), pizza]);
-			console.log('The product has been added to cart:', arr);
-		}
-	};
+import { findIndex, sumBy } from 'lodash';
+import { useSnapshot } from 'valtio';
+import state from '../store/stats';
+import * as currency from 'currency.js';
+const Data = () => {
+	const snap = useSnapshot(state);
 
 	return (
 		<Wrap justify='flex-end' spacing='4'>
-			{data.map((pizza) => (
+			{snap.data.map((pizza) => (
 				<WrapItem key={pizza.key}>
 					<Box
 						onClick={() => {
-							addToCart(pizza.key);
-							if (ss) {
-								pizza.quantity += 1;
-								//setState((prevState) => [...prevState, pizza]);
-								setState({
-									arrayvar: [...arr.arrayvar, pizza],
-								});
-							} else setState((prevState) => [...prevState.quantity, pizza]);
+							const check_index = snap.bill.findIndex(
+								(item) => item.key === pizza.key,
+							);
+
+							if (check_index === -1) {
+								state.bill.push(pizza);
+							} else {
+								state.bill[check_index].quantity += 1;
+							}
 						}}
 						cursor='pointer'
 						borderLeft='8px'
@@ -65,7 +54,9 @@ const Data = ({ data, setState, arr }) => {
 	);
 };
 
-const InvoiceTable = ({ pizza }) => {
+const InvoiceTable = () => {
+	const snap = useSnapshot(state);
+
 	return (
 		<Table variant='striped' size='sm' colorScheme='green'>
 			<TableCaption placement='top' fontWeight='extrabold'>
@@ -84,36 +75,46 @@ const InvoiceTable = ({ pizza }) => {
 				</Tr>
 			</Thead>
 			<Tbody>
-				{pizza.map((p, index) => {
+				{snap.bill.map((pizza, index) => {
+					//	state.totalAmount = pizza.price * pizza.quantity;
 					return (
 						<Tr key={index}>
 							<Td>{index + 1}</Td>
-							<Td>{p.name}</Td>
-							<Td>{p.price}</Td>
-							<Td>{p.quantity}</Td>
-							<Td>{p.price * 2}</Td>
+							<Td>{pizza.name}</Td>
+							<Td>{pizza.price.toFixed(2)}</Td>
+							<Td>{pizza.quantity}</Td>
+							<Td>{(pizza.price * pizza.quantity).toFixed(2)}</Td>
 						</Tr>
 					);
 				})}
 			</Tbody>
 			<Tfoot>
 				<Tr>
-					<Th>Total Items: 4</Th>
+					<Th>Total Items: {snap.bill.length}</Th>
 					<Th></Th>
 					<Th></Th>
 					<Th></Th>
-					<Th ml={10}>Total Amount: 34.56 USD</Th>
+					<Th ml={10}>
+						Total Amount:{' '}
+						{snap.bill.reduce(function (acc, curr) {
+							const results = acc + curr.quantity * curr.price;
+
+							return results;
+						}, 0)}{' '}
+						$
+					</Th>
 				</Tr>
 			</Tfoot>
 		</Table>
 	);
 };
 export default function Main() {
-	const [arr, setArr] = useState([]);
+	const snap = useSnapshot(state);
+
 	return (
 		<Center m='2%'>
 			<VStack>
-				<pre>{JSON.stringify(arr, null, 2)}</pre>
+				{/* 	<pre>{JSON.stringify(snap.bill, null, 2)}</pre> */}
 				<Text
 					alignSelf='stretch'
 					textAlign='center'
@@ -134,9 +135,9 @@ export default function Main() {
 					borderColor='green.100'
 					p='1'
 					borderRadius='2xl'>
-					<InvoiceTable pizza={arr} />
+					<InvoiceTable />
 				</Box>
-				<Data data={dataArray} setState={setArr} arr={arr} />
+				<Data />
 			</VStack>
 		</Center>
 	);
