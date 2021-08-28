@@ -1,7 +1,9 @@
 * {
 	font-family: 'Times New Roman', 'Times, serif';
 }
-
+html {
+	min-width: 50ch;
+}
 /* .navMenu {
 	
 	position: absolute;
@@ -84,23 +86,66 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	position: fixed;
-	right: 38%;
-	top: 300px;
+	right: 5%;
+	top: 65%;
 	transition: all 0.2s ease-in 0s;
 	z-index: 9999;
 	cursor: pointer;
 	background-color: rgb(7, 201, 7);
 	border-radius: 50%;
 }
-.stick2 {
 
 
-	text-align: center;
+.main {
+	display: flex;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	position: fixed;
-	right: 0.1%;
-	top: 240px;
-	transition: all 0.2s ease-in 0s;
-	z-index: 9999;
+	margin: 1%;
+	display: inline-block;
+	font-size: 5rem;
+	background: linear-gradient(
+		to bottom,
+		rgb(241, 236, 236),
+		rgb(20, 212, 170) 60%,
+		#fff 60%,
+		#fff 100%
+	);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	background-repeat: no-repeat;
+	transition: background 0.9s ease-out;
+	white-space: nowrap;
+	position: relative;
+}
+
+.main:before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 20px;
+	background: rgb(27, 219, 171);
+	bottom: 15px;
+	transition: all 0.2s ease-out;
+}
+
+.main:hover {
+	background-position: 0 11px;
+}
+
+.main:hover:before {
+	transform: translateY(10px);
+}
+footer {
+	text-align: center;
+	line-height: 50px;
+	font-weight: 800;
+	color: rgb(255, 255, 255);
+	height: 3rem;
+	background-color: #01f7c2;
+	margin-top: 5%;
 }

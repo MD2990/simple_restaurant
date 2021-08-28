@@ -36,7 +36,7 @@ const Data = () => {
 		return check_index;
 	};
 	return (
-		<Wrap justify='right' mr='680px'>
+		<Wrap justify='center' spacing='4'>
 			{snap.data.map((pizza) => (
 				<WrapItem key={pizza.key}>
 					<Box
@@ -162,81 +162,84 @@ const InvoiceTable = () => {
 		});
 	}
 	return (
-		<Box border='solid 1px lightgreen' borderRadius='2xl'>
-			{snap.bill.length > 0 && (
-				<HStack>
-					<IconButton
-						size='lg'
-						p='2'
-						m='2'
-						colorScheme='red'
-						aria-label='Clear'
-						icon={<DeleteIcon />}
-						onClick={() => {
-							state.bill.map((p) => (p.quantity = 1));
-							state.bill = [];
-						}}
-					/>
+		<Center>
+			<Box border='solid 1px lightgreen' borderRadius='2xl' m='2'>
+				{snap.bill.length > 0 && (
+					<HStack>
+						<IconButton
+							size='lg'
+							p='2'
+							m='2'
+							colorScheme='red'
+							aria-label='Clear'
+							icon={<DeleteIcon />}
+							onClick={() => {
+								state.bill.map((p) => (p.quantity = 1));
+								state.bill = [];
+							}}
+						/>
 
-					<IconButton
-						size='lg'
-						p='2'
-						m='2'
-						colorScheme='green'
-						aria-label='Clear'
-						icon={<EditIcon />}
-						onClick={() => printPdf()}
-					/>
-				</HStack>
-			)}
-			<Table variant='striped' size='sm' colorScheme='green' w='2xl'>
-				<TableCaption placement='top' fontWeight='extrabold'>
-					Where is My Pizza
-				</TableCaption>
-				<TableCaption placement='bottom'>
-					Thank you and have a delicious meal...
-				</TableCaption>
-				<Thead>
-					<Tr>
-						<Th>No.</Th>
-						<Th>Description</Th>
-						<Th>Price</Th>
-						<Th>Quantity</Th>
-						<Th>Total</Th>
-					</Tr>
-				</Thead>
-				<Tbody>
-					{snap.bill.map((pizza, index) => {
-						return (
-							<Tr key={index}>
-								<Td>{index + 1}</Td>
-								<Td>{pizza.name}</Td>
-								<Td>{pizza.price.toFixed(2)}</Td>
-								<Td>{pizza.quantity}</Td>
-								<Td>{(pizza.price * pizza.quantity).toFixed(2)}</Td>
-							</Tr>
-						);
-					})}
-				</Tbody>
-				<Tfoot>
-					<Tr>
-						<Th colSpan='2' textAlign='left' nowrap='nowrap'>
-							Total Items: {snap.bill.length}
-						</Th>
+						<IconButton
+							size='lg'
+							p='2'
+							m='2'
+							colorScheme='green'
+							aria-label='Clear'
+							icon={<EditIcon />}
+							onClick={() => printPdf()}
+						/>
+					</HStack>
+				)}
 
-						<Th colSpan='3' textAlign='right' nowrap='nowrap'>
-							Total Amount:{' '}
-							{state.bill.reduce(function (acc, curr) {
-								const results = acc + curr.quantity * curr.price;
+				<Table variant='striped' size='sm' colorScheme='green'>
+					<TableCaption placement='top' fontWeight='extrabold'>
+						Where is My Pizza
+					</TableCaption>
+					<TableCaption placement='bottom'>
+						Thank you and have a delicious meal...
+					</TableCaption>
+					<Thead>
+						<Tr>
+							<Th>No.</Th>
+							<Th>Description</Th>
+							<Th>Price</Th>
+							<Th>Quantity</Th>
+							<Th>Total</Th>
+						</Tr>
+					</Thead>
+					<Tbody>
+						{snap.bill.map((pizza, index) => {
+							return (
+								<Tr key={index}>
+									<Td>{index + 1}</Td>
+									<Td>{pizza.name}</Td>
+									<Td>{pizza.price.toFixed(2)}</Td>
+									<Td>{pizza.quantity}</Td>
+									<Td>{(pizza.price * pizza.quantity).toFixed(2)}</Td>
+								</Tr>
+							);
+						})}
+					</Tbody>
+					<Tfoot>
+						<Tr>
+							<Th colSpan='2' textAlign='left' nowrap='nowrap'>
+								Total Items: {snap.bill.length}
+							</Th>
 
-								return results;
-							}, 0)}{' '}
-							usd
-						</Th>
-					</Tr>
-				</Tfoot>
-			</Table>
-		</Box>
+							<Th colSpan='3' textAlign='right' nowrap='nowrap'>
+								Total Amount:{' '}
+								{state.bill.reduce(function (acc, curr) {
+									const results = acc + curr.quantity * curr.price;
+
+									return results;
+								}, 0)}{' '}
+								usd
+							</Th>
+						</Tr>
+					</Tfoot>
+				</Table>
+			</Box>
+		</Center>
 	);
 };
 export default function Main() {
@@ -244,16 +247,22 @@ export default function Main() {
 
 	return (
 		<>
-			{/* 	<div className='stick' onClick={() => scrollTo(0, 0)}>
+			<div className='stick' onClick={() => scrollTo(0, 0)}>
 				{snap.bill.length}
-			</div> */}
-
-			<Wrap justify='center'>
-				<WrapItem className='stick2'>
-					<InvoiceTable />
-				</WrapItem>
-			</Wrap>
-			<Data />
+			</div>
+			<Center>
+				<Wrap justify='center'>
+					<WrapItem>
+						<InvoiceTable />
+					</WrapItem>
+					<WrapItem>
+						<Data />
+					</WrapItem>
+				</Wrap>
+			</Center>
+			<footer>
+				<h1>&copy; Copyright 2021 Majid Ahmed</h1>
+			</footer>
 		</>
 	);
 }
