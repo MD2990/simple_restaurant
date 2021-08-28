@@ -70,3 +70,37 @@
 	transition: all 0.2s ease-in-out;
 	opacity: 1;
 }
+
+.stick {
+	width: 50px;
+	line-height: 50px;
+	font-family: 'Times New Roman', Times, serif;
+	font-weight: 600;
+	color: rgb(255, 255, 255);
+	text-shadow: 1px 1px #b1adadee;
+	font-size: large;
+	text-align: center;
+	height: 50px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	position: fixed;
+	right: 38%;
+	top: 300px;
+	transition: all 0.2s ease-in 0s;
+	z-index: 9999;
+	cursor: pointer;
+	background-color: rgb(7, 201, 7);
+	border-radius: 50%;
+}
+.stick2 {
+
+
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	position: fixed;
+	right: 0.1%;
+	top: 240px;
+	transition: all 0.2s ease-in 0s;
+	z-index: 9999;
+}
