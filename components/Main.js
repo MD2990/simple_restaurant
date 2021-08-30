@@ -46,26 +46,33 @@ const Data = () => {
 						borderRadius='xl'
 						shadow='dark-lg'
 						overflow='hidden'>
-						<Image src={pizza.img} height={350} width={350} alt={pizza.name} />
-						<HStack spacing='4' justify='center' p='2' maxW='20rem'>
+						<Image src={pizza.img} height={120} width={150} alt={pizza.name} />
+						<HStack spacing='4' justify='center' p='1' maxW='150px'>
 							<Text
+								textAlign='center'
+								isTruncated
 								whiteSpace='nowrap'
 								overflow='hidden'
 								textOverflow='ellipsis'
 								fontWeight='extrabold'
-								fontSize='xl'
+								fontSize='12px'
 								textColor='teal.400'>
 								{pizza.name.length < 16
 									? pizza.name
 									: pizza.name.substr(0, 16) + '... '}
 								{pizza.price.toFixed(2)}
 							</Text>
-							<Text fontWeight='hairline' fontSize='sm' textColor='teal.200'>
+							<Text
+								textAlign='center'
+								fontWeight='hairline'
+								fontSize='10px'
+								textColor='teal.200'>
 								{pizza.currency}
 							</Text>
-
+						</HStack>
+						<HStack spacing='4' justify='center' p='2' maxW='150'>
 							<IconButton
-								size='lg'
+								size='xs'
 								colorScheme='green'
 								aria-label='Add Pizza'
 								icon={<AddIcon />}
@@ -73,14 +80,13 @@ const Data = () => {
 									if (getIndex(pizza) === -1) {
 										state.bill.push(pizza);
 									} else {
-										//state.bill[check_index].quantity = 1;
 										state.bill[getIndex(pizza)].quantity += 1;
 									}
 								}}
 							/>
 
 							<IconButton
-								size='lg'
+								size='xs'
 								colorScheme='green'
 								aria-label='Remove Pizza'
 								icon={<MinusIcon />}
@@ -93,19 +99,13 @@ const Data = () => {
 										state.bill[getIndex(pizza)].quantity -= 1;
 									} else {
 										state.bill = state.bill.filter((p) => p.key !== pizza.key);
-										//return state.bill.filter((p) => p.key === '1');
 									}
-									//) {
-									/* 	if (state.bill[getIndex(pizza)].quantity < 2)
-											state.bill.pop(pizza[index]);
-										else state.bill[getIndex(pizza)].quantity -= 1; */
-									//}
 								}}
 							/>
 
 							<IconButton
 								isDisabled={getIndex(pizza) > -1 ? false : true}
-								size='lg'
+								size='xs'
 								colorScheme='red'
 								aria-label='Remove Pizza'
 								icon={<DeleteIcon />}
