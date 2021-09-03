@@ -1,11 +1,8 @@
 import {
 	Box,
-	Button,
 	Center,
-	Divider,
 	HStack,
 	IconButton,
-	StackDivider,
 	Table,
 	TableCaption,
 	Tbody,
@@ -15,20 +12,17 @@ import {
 	Th,
 	Thead,
 	Tr,
-	VStack,
 	Wrap,
 	WrapItem,
 } from '@chakra-ui/react';
 import { DeleteIcon, AddIcon, MinusIcon, EditIcon } from '@chakra-ui/icons';
-import autoTable from 'jspdf-autotable';
 
 import { toPDF } from '../utils/functions';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import { findIndex, sumBy } from 'lodash';
+import React, {  } from 'react';
 import { useSnapshot } from 'valtio';
-import NavBar from '../components/NavBar';
 import state from '../store/stats';
+import Footer from './Footer';
 const Data = () => {
 	const snap = useSnapshot(state);
 	const getIndex = (index) => {
@@ -260,9 +254,8 @@ export default function Main() {
 					</WrapItem>
 				</Wrap>
 			</Center>
-			<footer>
-				<h1>&copy; Copyright 2021 Majid Ahmed</h1>
-			</footer>
+			<Footer/>
+		
 		</>
 	);
 }
