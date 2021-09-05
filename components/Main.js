@@ -18,6 +18,7 @@ import {
 import { DeleteIcon, AddIcon, MinusIcon, EditIcon } from '@chakra-ui/icons';
 
 import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 import { toPDF } from '../utils/functions';
 import Image from 'next/image';
