@@ -17,9 +17,11 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon, AddIcon, MinusIcon, EditIcon } from '@chakra-ui/icons';
 
+import autoTable from 'jspdf-autotable';
+
 import { toPDF } from '../utils/functions';
 import Image from 'next/image';
-import React, {  } from 'react';
+import React from 'react';
 import { useSnapshot } from 'valtio';
 import state from '../store/stats';
 import Footer from './Footer';
@@ -254,8 +256,7 @@ export default function Main() {
 					</WrapItem>
 				</Wrap>
 			</Center>
-			<Footer/>
-		
+			<Footer />
 		</>
 	);
 }
