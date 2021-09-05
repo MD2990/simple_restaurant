@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export const toPDF = ({ rows, columns, title, style = 'p', coordinates = 300, totalItems, totalAmount }) => {
 	var doc = new jsPDF(style, 'pt'); // l or p
