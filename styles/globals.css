@@ -86,8 +86,8 @@ html {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	position: fixed;
-	right: 5%;
-	top: 65%;
+	right: 0.9%;
+	top: 87%;
 	transition: all 0.2s ease-in 0s;
 	z-index: 9999;
 	cursor: pointer;

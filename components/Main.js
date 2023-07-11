@@ -9,15 +9,16 @@ import {
   Td,
   Text,
   Tfoot,
+  Divider,
   Th,
   Thead,
   Tr,
   Wrap,
   WrapItem,
+  TableContainer,
 } from "@chakra-ui/react";
-import { DeleteIcon, AddIcon, MinusIcon, CalendarIcon } from "@chakra-ui/icons";
+import { DeleteIcon, AddIcon, MinusIcon } from "@chakra-ui/icons";
 import { ImPrinter } from "react-icons/im";
-
 import { toPDF } from "../utils/functions";
 import Image from "next/image";
 import React from "react";
@@ -31,7 +32,15 @@ const Data = () => {
     return check_index;
   };
   return (
-    <Wrap justify="center" spacing="4" mb="7%">
+    <Wrap
+      justify="center"
+      spacing={[1, 2, 3, 4]}
+      m="1%"
+      p="1%"
+      mb={"4rem"}
+      boxShadow={"inner"}
+      borderRadius="xl"
+    >
       {snap.data.map((pizza) => (
         <WrapItem key={pizza.key}>
           <Box
@@ -41,33 +50,44 @@ const Data = () => {
             borderRadius="xl"
             shadow="dark-lg"
             overflow="hidden"
+            textAlign={"center"}
           >
-            <Image src={pizza.img} height={120} width={150} alt={pizza.name} />
-            <HStack spacing="4" justify="center" p="1" maxW="150px">
-              <Text
-                textAlign="center"
-                isTruncated
-                whiteSpace="nowrap"
-                overflow="hidden"
-                textOverflow="ellipsis"
-                fontWeight="extrabold"
-                fontSize="12px"
-                textColor="teal.400"
-              >
-                {pizza.name.length < 16
-                  ? pizza.name
-                  : pizza.name.substr(0, 16) + "... "}
-                {pizza.price.toFixed(2)}
-              </Text>
-              <Text
-                textAlign="center"
-                fontWeight="hairline"
-                fontSize="10px"
-                textColor="teal.200"
-              >
-                {pizza.currency}
-              </Text>
-            </HStack>
+            <Image
+              src={pizza.img}
+              width={150}
+              height={150}
+              alt={pizza.name}
+              quality={100}
+              blurDataURL="data:/img/loading.png"
+              placeholder="blur"
+              priority={true}
+            />
+
+            <Text
+              textAlign="center"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              fontWeight="extrabold"
+              fontSize={["xx-small", "xs", "md", "lg"]}
+              textColor="teal.600"
+            >
+              {pizza.name}
+            </Text>
+            <Divider />
+
+            <Text
+              textAlign="center"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              fontWeight="hairline"
+              fontSize={["xx-small", "xs"]}
+              textColor="teal.400"
+            >
+              {pizza.price.toFixed(2)} {" USD"}
+            </Text>
+
             <HStack spacing="4" justify="center" p="2" maxW="150">
               <IconButton
                 size="xs"
@@ -160,14 +180,12 @@ const InvoiceTable = () => {
     });
   }
   return (
-    <Center>
-      <Box border="solid 1px lightgreen" borderRadius="2xl" m="2">
+    <Center >
+      <TableContainer border="solid 1px lightGreen" borderRadius="2xl" >
         {snap.bill.length > 0 && (
-          <HStack>
+          <HStack spacing={[1, 2, 3]} p="1" m="1">
             <IconButton
-              size="lg"
-              p="2"
-              m="2"
+              size={["xs", "sm", "md"]}
               colorScheme="red"
               aria-label="Clear"
               icon={<DeleteIcon />}
@@ -178,27 +196,30 @@ const InvoiceTable = () => {
             />
 
             <IconButton
-              size="lg"
-              p="2"
-              m="2"
+              size={["xs", "sm", "md"]}
               colorScheme="green"
               aria-label="Clear"
-              icon={<ImPrinter size="1.5rem" />}
+              icon={<ImPrinter />}
               onClick={() => printPdf()}
             />
           </HStack>
         )}
-
-        <Table variant="striped" size="sm" colorScheme="green">
-          <TableCaption placement="top" fontWeight="extrabold">
+        <Table variant="striped" size={["sm", "md", "lg"]} colorScheme="green">
+          <TableCaption
+            placement="top"
+            fontWeight="bold"
+            fontSize={["xx-small", "sm", "md", "lg"]}
+            textDecoration={"underline"}
+            color={"teal.300"}
+          >
             Where is My Pizza
           </TableCaption>
           <TableCaption
             placement="bottom"
-            fontWeight="bold"
-            fontSize="xx-small"
+            fontWeight="hairline"
+            fontSize={["xx-small", "sm"]}
           >
-            Thank you and have a delicious meal...
+            Thank you and have a delicious meal 🍕
           </TableCaption>
           <Thead>
             <Tr>
@@ -239,8 +260,8 @@ const InvoiceTable = () => {
               </Th>
             </Tr>
           </Tfoot>
-        </Table>
-      </Box>
+        </Table>{" "}
+      </TableContainer>
     </Center>
   );
 };
@@ -252,7 +273,7 @@ export default function Main() {
       <div className="stick" onClick={() => scrollTo(0, 0)}>
         {snap.bill.length}
       </div>
-      <Center>
+      <Center m="1" p="1">
         <Wrap justify="center">
           <WrapItem>
             <InvoiceTable />
